@@ -32,7 +32,6 @@ class App extends Component {
   }
 
   drawerToggleClickHandler = () => {
-    this.state.layers.pop();
     this.setState((prevState) => {
       return {sideDrawerOpen: !prevState.sideDrawerOpen};
     });
@@ -43,6 +42,11 @@ class App extends Component {
     this.setState({sideDrawerOpen: false});
   };
 
+  handleDelete = itemId => {
+    const items = this.state.layers.filter(l => l.layer._leaflet_id !== itemId);
+    this.setState({ layers: items });
+    console.log(this.state.layers)
+  };
 
 
   render() {
@@ -60,7 +64,7 @@ class App extends Component {
           position: 'absolute',
           marginTop: "56px",
           }}>
-          <LayerList layers={this.state.layers} orderLayers={this.orderLayers}/>
+          <LayerList layers={this.state.layers} orderLayers={this.orderLayers} onDelete={this.handleDelete}/>
         </div>
         <Toolbar drawerClickHandler={this.drawerToggleClickHandler} />
         <main style={{paddingTop: '56px', paddingLeft: '300px', zIndex: "-1"}}>

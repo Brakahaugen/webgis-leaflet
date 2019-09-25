@@ -20,6 +20,7 @@ const getItems = count =>
     secondary: k % 2 === 0 ? `Whatever for ${k}` : undefined
   }));
 
+
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -52,10 +53,15 @@ class LayerList extends Component {
     this.onDragEnd = this.onDragEnd.bind(this);
   }
 
-  componentDidUpdate(){
-      console.log("updated");
-      console.log(this.state.items);
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (this.props.layers !== prevProps.layers) {
+      this.setState({
+        items: this.props.layers
+      });      
+    }
   }
+
 
   onDragEnd(result) {
     // dropped outside the list
@@ -75,6 +81,7 @@ class LayerList extends Component {
       items: items
     });
   }
+
 
   // Normally you would want to split things out into separate components.
   // But in this example everything is just done in one place for simplicity
@@ -107,8 +114,9 @@ class LayerList extends Component {
                           secondary={item.layer._leaflet_id}
                         />
                         <ListItemSecondaryAction>
-                          <IconButton onClick={deleteLayer(item.layer._leaflet_id)}>
-                            <DeleteIcon />
+                          <IconButton id={item.layer._leaflet_id} onClick={() => this.props.onDelete(item.layer._leaflet_id )}
+>
+                            <EditIcon />
                           </IconButton>
                         </ListItemSecondaryAction>
                       </ListItem>
