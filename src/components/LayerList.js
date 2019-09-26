@@ -12,14 +12,6 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import InboxIcon from "@material-ui/icons/Inbox";
 import EditIcon from "@material-ui/icons/Edit";
 
-// fake data generator
-const getItems = count =>
-  Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${k}`,
-    primary: `item ${k}`,
-    secondary: k % 2 === 0 ? `Whatever for ${k}` : undefined
-  }));
-
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -43,12 +35,15 @@ const getListStyle = isDraggingOver => ({
   //background: isDraggingOver ? 'lightblue' : 'lightgrey',
 });
 
+
+
 class LayerList extends Component {
+  
   constructor(props) {
     super(props);
     this.state = {
-      items2: getItems(10),
       items: props.layers,
+      selectedIndex: null,
     };
     this.onDragEnd = this.onDragEnd.bind(this);
   }
@@ -61,7 +56,6 @@ class LayerList extends Component {
       });      
     }
   }
-
 
   onDragEnd(result) {
     // dropped outside the list
@@ -86,6 +80,7 @@ class LayerList extends Component {
   // Normally you would want to split things out into separate components.
   // But in this example everything is just done in one place for simplicity
   render() {
+
     return (
 
       <DragDropContext onDragEnd={this.onDragEnd}>
@@ -93,10 +88,12 @@ class LayerList extends Component {
           {(provided, snapshot) => (
             <RootRef rootRef={provided.innerRef}>
               <List style={getListStyle(snapshot.isDraggingOver)}>
-                {this.state.items.map((item, index) => (
+                {this.props.layers.map((item, index) => (
                   <Draggable key={item.layer._leaflet_id} draggableId={item.layer._leaflet_id} index={index}>
                     {(provided, snapshot) => (
                       <ListItem
+                        selected={this.props.selectedIndex === index}
+                        onClick={event => this.props.handleListItemClick(event, index)}
                         ContainerComponent="li"
                         ContainerProps={{ ref: provided.innerRef }}
                         {...provided.draggableProps}
