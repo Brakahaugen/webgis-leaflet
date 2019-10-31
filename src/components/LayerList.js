@@ -107,7 +107,7 @@ class LayerList extends Component {
                           <InboxIcon />
                         </ListItemIcon>
                         <ListItemText
-                          primary={item.layer._leaflet_id}
+                          primary={item.layer.name ? item.layer.name: item.layer._leaflet_id}
                           secondary={item.layer._leaflet_id}
                         />
                         <ListItemSecondaryAction>

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import ProcessForm from '../Processing/ProcessForm'
 import DrawerToggleButton from '../SideDrawer/DrawerToggleButton';
 import './Toolbar.css';
 
@@ -13,8 +13,7 @@ const toolbar = props => (
         <div className="spacer" />
         <div className="toolbar_navigation-items">
             <ul>
-                <li><a href="/">Products</a></li>
-                <li><a href="/">Users</a></li>
+              <ProcessForm layers={props.layers} />
             </ul>
         </div>
     </nav>
