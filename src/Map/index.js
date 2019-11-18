@@ -43,29 +43,38 @@ export default class Map extends React.Component {
                   maxNativeZoom: 17,
         }),
     });
-    //this.addLayer(layer) = this.addLayer(layer).bind(this);
     this.map.on('layeradd', this.props.addLayer);
   }
 
   componentDidUpdate = () => {
-//    console.log(this.props.file);
-    
-    var file = this.props.file;
-    if (file) {
-      //try this
-      console.log("adding layers")
-      this.createLayer(file);
+    if (this.props.file) {
+      this.createLayer(this.props.file);
+      this.props.resetFile();
+    }
+    if (this.props.deletedLayer) {
+      this.map.removeLayer(this.props.deletedLayer)
       this.props.resetFile();
     }
   }
 
-  zoomToFeature = (e) => {
-    console.log(e.layer)
-    return (e.layer ? this.map.fitBounds(e.layer.getBounds()): "$10.00");
-  }
+  // deleteLayers = () => {
+  //   // this.props.layers
+  //   let maplayers = this.map._layers._leaflet_id
+  //   console.log(maplayers)
+  //   this.props.layers.forEach(l1 => {
+  //     this.map._layers.forEach(l2 => {
+  //     l1.key === l2._leaflet_id {}
+        
+  //     })
+  //     });
+  //   }
+
+    zoomToFeature = (e) => {
+      console.log(e.layer)
+      return (e.layer ? this.map.fitBounds(e.layer.getBounds()): "$10.00");
+    }
 
   onEachFeature = (e) => {
-    console.log(e);
     this.map.on({
       click: this.zoomToFeature,
     })

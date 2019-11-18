@@ -2,51 +2,34 @@ import * as turf from '@turf/turf';
 import L from 'leaflet';
 
 
-export default function createBuffer(input) {
+export default function createBuffer(input, dist) {
 
-  // var rect = L.rectangle(bounds).toGeoJSON();
-  // L.extend(rect.properties, {
-  //     itemIndex: v.itemIndex
-  // });
 
+  
+  //Creating a simple featurecollection in geojson,
+  //and populating by the features from the leaflet layers.
   var collection = {
     "type": "FeatureCollection",
-    "features": []
-  };
-
-  var collection2 = {
-    "type": "FeatureCollection",
-    "features": [
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [10, 10]
-        },
-        "properties": {
-          "name": "null island"
-        }
-      }
-    ]
-  }
+    "features": [],
+  } 
   input.layer.eachLayer(function (layer) {
-    console.log(layer)
     collection.features.push(layer.feature)
   });
-  var point1 = turf.point([-73.988214, 40.749128]);
+  console.log(input)
   console.log(collection)
 
-// var buffered = turf.buffer(
-//   collection,
-//   0.1,
-//   "kilometers"
-// );
+  try {
+    var buffered = turf.buffer(
+      collection,
+      dist,
+      {units: "kilometers"},
+    )
+    console.log(JSON.stringify(buffered));
+    return buffered;
+    
+  } catch {
+    console.log("not today bro")
+    return null;
+  }
 
-
-var buffered2 = turf.buffer(
-  collection2,
-  0.1,
-  "kilometers"
-)
-console.log();
 }

@@ -13,7 +13,10 @@ const toolbar = props => (
         <div className="spacer" />
         <div className="toolbar_navigation-items">
             <ul>
-              <ProcessForm layers={props.layers} />
+              <ProcessForm 
+                layers={props.layers} 
+                handleNewFile={props.handleNewFile}
+              />
             </ul>
         </div>
     </nav>

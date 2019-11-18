@@ -3,10 +3,11 @@ import Toolbar from './components/Toolbar/Toolbar';
 import SideDrawer from './components/SideDrawer/SideDrawer';
 import Backdrop from './components/Backdrop/Backdrop';
 import Map from './Map/index';
-import LayerList from './components/LayerList.js';
+import LayerList from './components/LayerList/LayerList.js';
 import DragAndDrop from './components/DragAndDrop.js';
 import Dropzone from 'react-dropzone';
 import {useDropzone} from 'react-dropzone';
+import { Resizable, ResizableBox } from 'react-resizable';
 import { colors } from '@material-ui/core';
 
 
@@ -56,11 +57,11 @@ class App extends Component {
     selectedIndex: null,
     file: null,
     deletedLayers: [],
+    deletedLayer: null,
   }
 
   componentDidUpdate = () => {
-//    console.log(this.state.file);
-//    console.log(this.state.layers)
+
   }
 
   drawerToggleClickHandler = () => {
@@ -122,28 +123,19 @@ class App extends Component {
 
 
   handleDelete = itemId => {
-    //finds the layer and removes it
-
-    let layerToDelete = this.state.layers.find(l => l.layer._leaflet_id !== itemId)
-    console.log(this.state.layers.length)
-    console.log(this.state.layers[0].layer)
     
-      if((this.state.layers.length === 1) && (this.state.layers[0].layer._leaflet_id === itemId)) {
-        let selectedLayer = this.state.layers[0]
-        this.state.layers[0].layer.remove();
-        this.setState({
-          layers: [],
-          deletedLayers: this.state.deletedLayers.push(selectedLayer)
-        })
-        return
-      }
     try {
-      layerToDelete.layer.remove();
-      //Save the deleted layer so you can undo it later;
+      //Finds the layer we are going to delete
+      let layerToDelete = this.state.layers.filter(l => l.layer._leaflet_id == itemId)[0]
 
-      //updates the new state... Does not add the layer...
-    this.setState({ layers: this.state.layers.filter(l => l.layer._leaflet_id !== itemId)});
-
+      // Save the deleted layer so you can undo it later;
+      // updates the new state... Does not add the layer...
+      this.state.deletedLayers.push(layerToDelete)
+      console.log(layerToDelete.layer._leaflet_id)
+      this.setState({
+        deletedLayer: layerToDelete.layer,
+        layers: this.state.layers.filter(l => l.layer._leaflet_id !== itemId)
+      });
     } catch {
       alert('could not remove the layer');
     }
@@ -158,7 +150,6 @@ class App extends Component {
 
 
   addLayer = (layer) => {
-    console.log(this.state.layers)
     if (layer.layer._layers && !layer.layer._svgSize) {
       this.state.layers.push(layer);
       layer.key = layer.layer._leaflet_id
@@ -178,7 +169,8 @@ class App extends Component {
 
   resetFile = () => {
     this.setState({
-      file: null
+      file: null,
+      deletedLayer: null
    })  
   }
   
@@ -206,8 +198,8 @@ class App extends Component {
         height: '100%',
         width: '100%'}}>
         <div style={{
-          height: '20%',
-          width: '25%',
+          height: '100%',
+          width: '19%',
           position: 'absolute',
           marginTop: "56px",
           }}>
@@ -224,6 +216,7 @@ class App extends Component {
         <Toolbar 
         drawerClickHandler={this.drawerToggleClickHandler} 
         layers={this.state.layers}
+        handleNewFile={this.handleNewFile}
         />
         <main style={{paddingTop: '56px', paddingLeft: '300px', zIndex: "-1"}}>
           <Map  
@@ -234,6 +227,9 @@ class App extends Component {
             selectLayer={this.selectLayer}
             file={this.state.file}
             resetFile={this.resetFile}
+            layers={this.state.layers}
+            deletedLayers={this.state.deletedLayers}
+            deletedLayer={this.state.deletedLayer}
           />
           </main>
 

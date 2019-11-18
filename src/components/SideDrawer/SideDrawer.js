@@ -1,8 +1,8 @@
 import React from 'react';
 
 import './SideDrawer.css';
-import SimpleList from '../LayerListElement.js';
-import LayerList from '../LayerList';
+import SimpleList from '../LayerList/LayerListElement.js';
+import LayerList from '../LayerList/LayerList.js';
 
 const sideDrawer = props => {
   let drawerClasses = 'side-drawer';

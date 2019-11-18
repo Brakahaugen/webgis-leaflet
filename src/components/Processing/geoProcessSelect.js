@@ -29,7 +29,6 @@ export default function ControlledOpenSelect({initialParam, type, layers, tools,
   const [open, setOpen] = React.useState(false);
 
   
-
   const handleChange = event => {
     setValue(event.target.value);
     setParentValue(event.target.value)
