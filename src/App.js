@@ -8,7 +8,7 @@ import DragAndDrop from './components/DragAndDrop.js';
 import Dropzone from 'react-dropzone';
 import {useDropzone} from 'react-dropzone';
 import { Resizable, ResizableBox } from 'react-resizable';
-import { colors } from '@material-ui/core';
+import { colors, Hidden } from '@material-ui/core';
 
 
 function MyDropzone(props) {
@@ -58,10 +58,13 @@ class App extends Component {
     file: null,
     deletedLayers: [],
     deletedLayer: null,
+    hide: null,
+    unhide: null,
+    zoomTo: null,
   }
 
   componentDidUpdate = () => {
-
+    console.log(this.state.layers)
   }
 
   drawerToggleClickHandler = () => {
@@ -150,7 +153,13 @@ class App extends Component {
 
 
   addLayer = (layer) => {
-    if (layer.layer._layers && !layer.layer._svgSize) {
+    //Checks if the layer exists from before
+    let existingLayer = this.state.layers.find(l => l.layer._leaflet_id == layer.layer._leaflet_id)
+
+    if (layer.layer._layers && !layer.layer._svgSize && existingLayer == undefined) {
+      console.log(layer)
+      console.log(this.state.layers)
+      console.log(layer === this.state.layers[0])
       this.state.layers.push(layer);
       layer.key = layer.layer._leaflet_id
     } 
@@ -167,15 +176,42 @@ class App extends Component {
     });
   }
 
+  zoomToLayer = (e) => {
+    console.log("KJØASKFJØASJFKKASFJØ")
+    this.setState({
+      zoomTo: e
+    })
+  }
+
+  toggleVisibility = (e) => {
+    console.log(e)
+    if (e.visibility) {
+      this.setState({
+        hide: e
+      })
+    } else {
+      this.setState({
+        unhide: e
+      })
+    }
+    e.visibility = !e.visibility
+  }
+
+
+
+
   resetFile = () => {
     this.setState({
       file: null,
-      deletedLayer: null
+      deletedLayer: null,
+      hide: null,
+      unhide: null,
    })  
   }
   
   
   highlightFeature = (e) => {
+    console.log(e)
     e.target.setStyle({
       weight: 2,
       dashArray: '',
@@ -211,7 +247,11 @@ class App extends Component {
           selectedIndex={this.state.selectedIndex}
           layers={this.state.layers} 
           orderLayers={this.orderLayers} 
-          onDelete={this.handleDelete}/>          
+          onDelete={this.handleDelete}
+          toggleVisibility={this.toggleVisibility}
+          zoomToLayer={this.zoomToLayer}
+          />
+                    
         </div>
         <Toolbar 
         drawerClickHandler={this.drawerToggleClickHandler} 
@@ -230,6 +270,10 @@ class App extends Component {
             layers={this.state.layers}
             deletedLayers={this.state.deletedLayers}
             deletedLayer={this.state.deletedLayer}
+            toggleVisibility={this.toggleVisibility}
+            hide={this.state.hide}
+            unhide={this.state.unhide}
+            zoomTo={this.state.zoomTo}
           />
           </main>
 
