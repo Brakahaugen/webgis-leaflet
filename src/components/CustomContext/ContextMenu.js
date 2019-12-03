@@ -1,46 +1,120 @@
 import React from 'react';
-import Menu from '@material-ui/core/Menu';
+import IconButton from '@material-ui/core/Button';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
-import Typography from '@material-ui/core/Typography';
+import MenuList from '@material-ui/core/MenuList';
+import { makeStyles } from '@material-ui/core/styles';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DisplayDialog from '../LayerList/changeDisplay.js';
 
-const initialState = {
-  mouseX: null,
-  mouseY: null,
-};
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+  },
+  paper: {
+    marginRight: theme.spacing(2),
+  },
+}));
 
-export default function ContextMenu() {
-  const [state, setState] = React.useState(initialState);
-
-  const handleClick = event => {
-    event.preventDefault();
-    setState({
-      mouseX: event.clientX - 2,
-      mouseY: event.clientY - 4,
-    });
+const MenuListComposition = (props) => {
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
+  let displayDialog = null;
+  const handleToggle = () => {
+    setOpen(prevOpen => !prevOpen);
   };
 
-  const handleClose = () => {
-    setState(initialState);
+  const handleClose = event => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    setOpen(false);
   };
 
-  return (
+  function handleListKeyDown(event) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    }
+  }
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpen = React.useRef(open);
+  React.useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus();
+    }
+
+    prevOpen.current = open;
+  }, [open]);
+
+  const openDisplayDialog = () => {
+    console.log("jada")
+    displayDialog = <div><DisplayDialog
+              onClick={closeDialog}
+              item={props.item}
+              heading={"Change display"}
+              subTexts={[
+                "change layer name",
+                // "change edgecolor",
+                // "change edgesize",
+              ]}
+            />
+            </div>
+  }
+
+  const closeDialog = () => {
+    displayDialog = null
+  }
+
+  if (displayDialog != null) {
+    return displayDialog
+  } else {
+    return (
     <div>
-      <Menu
-        keepMounted
-        open={state.mouseY !== null}
-        onClose={handleClose}
-        anchorReference="anchorPosition"
-        anchorPosition={
-          state.mouseY !== null && state.mouseX !== null
-            ? { top: state.mouseY, left: state.mouseX }
-            : undefined
-        }
-      >
-        <MenuItem onClick={handleClose}>Copy</MenuItem>
-        <MenuItem onClick={handleClose}>Print</MenuItem>
-        <MenuItem onClick={handleClose}>Highlight</MenuItem>
-        <MenuItem onClick={handleClose}>Email</MenuItem>
-      </Menu>
+    <IconButton
+      ref={anchorRef}
+      aria-controls={open ? 'menu-list-grow' : undefined}
+      aria-haspopup="true"
+      onClick={handleToggle}
+    >
+      <MoreVertIcon />
+    </IconButton>
+    <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+      {({ TransitionProps, placement }) => (
+        <Grow
+          {...TransitionProps}
+          style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+        >
+          <Paper>
+            <ClickAwayListener onClickAway={handleClose}>
+              <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                <MenuItem onClick={props.onZoomToLayer}>Zoom to layer</MenuItem>
+                <MenuItem onClick={props.changeDisplay}>Change layer display</MenuItem>
+                <MenuItem onClick={openDisplayDialog}>Change display</MenuItem>
+                {/* <DisplayDialog 
+                  item={props.item}
+                  heading={"Change display"}
+                  subTexts={[
+                    "change fillcolor",
+                    "change edgecolor",
+                    "change edgesize",
+                  ]}
+                /> */}
+
+              </MenuList>
+            </ClickAwayListener>
+          </Paper>
+        </Grow>
+      )}
+    </Popper>
     </div>
-  );
-}
+    )}
+  }
+
+export default MenuListComposition;

@@ -13,8 +13,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import DeleteIcon from '@material-ui/icons/Delete';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import MenuPopupState from '../CustomContext/MenuPopupState'
+import ContextMenu from '../CustomContext/ContextMenu.js';
+import DisplayDialog from './changeDisplay.js';
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -47,6 +47,8 @@ class LayerList extends Component {
     this.state = {
       items: props.layers,
       selectedIndex: null,
+      displayDialog: null,
+      disableDrag: false
     };
     this.onDragEnd = this.onDragEnd.bind(this);
   }
@@ -64,6 +66,18 @@ class LayerList extends Component {
         items: this.props.layers
       });      
     }
+  }
+
+  onZoomToLayer = (item) => {
+    console.log("yiagkdajøgaskdgøasdk")
+  }
+
+  changeDisplay = (item) => {
+
+  }
+
+  changeName = (item) => {
+    
   }
 
   onDragEnd(result) {
@@ -89,19 +103,6 @@ class LayerList extends Component {
     console.log("RIGHT CLICK BABY ")
   }
 
-  contextClick(i, id, popupState) {
-
-    console.log("lets go ")
-    switch(i){
-      case 1: 
-        //zoom TO layer
-        popupState.close()
-
-
-        break
-    }
-
-  }
 
 
   // Normally you would want to split things out into separate components.
@@ -110,12 +111,9 @@ class LayerList extends Component {
     let visibility = <VisibilityIcon/>
     let visibilityOff = <VisibilityOffIcon/>
 
-    return (
+      return (
       
       <DragDropContext onDragEnd={this.onDragEnd}>
-      {/* <ContextMenu     menuList={1,2,3}/> */}
-      {MenuPopupState}
-
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
             <RootRef rootRef={provided.innerRef}>
@@ -131,27 +129,40 @@ class LayerList extends Component {
                         ContainerProps={{ ref: provided.innerRef }}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        style={getItemStyle(
+                        style={this.state.disableDrag ? console.log() : getItemStyle(
                           snapshot.isDragging,
                           provided.draggableProps.style
                         )}
                       >
-                              {MenuPopupState}
-
                         <ListItemText
                           primary={item.layer.name ? item.layer.name: item.layer._leaflet_id}
-                          secondary={item.layer._leaflet_id}
+                          //secondary={item.layer._leaflet_id}
                         />
                         <ListItemIcon>
                           <IconButton id={item.layer._leaflet_id} onClick={() => this.props.toggleVisibility(item.layer)}>
                             {item.layer.visibility ? visibility: visibilityOff}
                           </IconButton>
                         </ListItemIcon>
-                        
                         <IconButton id={item.layer._leaflet_id} onClick={() => this.props.onDelete(item.layer._leaflet_id )}>
                           <DeleteIcon />
                         </IconButton>
-                        {MenuPopupState}
+                        <div style={{
+                          zIndex: '800'}}>
+                        <DisplayDialog
+                          onClick={() => this.state.disableDrag = true}  
+                          onClose={() => this.state.disableDrag = false}                 
+                          item={item}
+                          heading={"Change display"}
+                          subTexts={[
+                            "Change layer name",
+                            //"Change edgecolor",
+                            // "Change edgesize",
+                          ]}  
+                            />
+                          </div>
+                        {/* <IconButton>
+                          <MoreVertIcon onClick={this.setState({moreOptions: item})}/>
+                        </IconButton> */}
                         <ListItemSecondaryAction/>
                       </ListItem>
                     )}
@@ -166,5 +177,6 @@ class LayerList extends Component {
     );
   }
 }
+
 
 export default LayerList;

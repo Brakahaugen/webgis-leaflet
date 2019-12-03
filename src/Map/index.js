@@ -20,6 +20,7 @@ function createPopup(feature, layer) {
 }
 
 
+
 export default class Map extends React.Component {
 
 
@@ -45,6 +46,7 @@ export default class Map extends React.Component {
         }),
     });
     this.map.on('layeradd', this.props.addLayer);
+    this.map.on('click', this.props.clickCreateMode)
   }
 
   componentDidUpdate = () => {
@@ -71,17 +73,22 @@ export default class Map extends React.Component {
       this.map.addLayer(this.props.unhide)
       this.props.resetFile();
     }
-    else if (this.props.zoomTo) {
+    else if (this.props.zoomTo[0]) {
       console.log(this.props.zoomTo)
-      console.log(this.props.zoomTo.getBounds())
-      console.log(this.props.zoomTo.target.getBounds())
+      return this.map.fitBounds(this.props.zoomTo[0].target.getBounds())
       // this.map.fitBounds()
     }
   }
   
+
+
   zoomToFeature = (e) => {
-    console.log(e)
-    return (e.layer ? this.map.fitBounds(e.target.getBounds()): "$10.00");
+    try { 
+      console.log(e)
+      return (e.layer ? this.map.fitBounds(e.target.getBounds()): "$10.00");
+    } catch {
+      
+    }
   }
 
   onEachFeature = (e) => {
@@ -121,6 +128,6 @@ export default class Map extends React.Component {
   }
 
   render() {
-    return <Wrapper width="100%" height="500px" id='map' />
+    return <Wrapper width="100%" height="100%" id='map' />
   }
 }

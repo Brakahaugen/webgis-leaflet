@@ -6,41 +6,11 @@ import Map from './Map/index';
 import LayerList from './components/LayerList/LayerList.js';
 import DragAndDrop from './components/DragAndDrop.js';
 import Dropzone from 'react-dropzone';
-import {useDropzone} from 'react-dropzone';
 import { Resizable, ResizableBox } from 'react-resizable';
 import { colors, Hidden } from '@material-ui/core';
-
-
-function MyDropzone(props) {
- const onDrop = useCallback(acceptedFiles => {
-    const reader = new FileReader()
-  
-    reader.onabort = () => console.log('file reading was aborted')
-    reader.onerror = () => console.log('file reading has failed')
-    reader.onload = () => {
-      // Do whatever you want with the file contents
-      const binaryStr = reader.result
-      let jsonLayer = JSON.parse(binaryStr)
-      props.handleNewFile(jsonLayer);
-      console.log(jsonLayer);
-    }
-  
-      acceptedFiles.forEach(file => reader.readAsBinaryString(file))
-    }, []);
-
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
-
-    return (
-      <div {...getRootProps()}>
-        <input {...getInputProps()} />
-        {
-          isDragActive ?
-            <p>Drop the files here ...</p> :
-            <p>Drag 'n' drop some files here, or click to select files</p>
-        }
-      </div>
-    )
-  }
+import { textAlign } from '@material-ui/system';
+import MyDropzone from './components/DropZone.js';
+import SimpleSnackbar from './components/Processing/Snackbar.js';
 
 class App extends Component {
 
@@ -60,7 +30,8 @@ class App extends Component {
     deletedLayer: null,
     hide: null,
     unhide: null,
-    zoomTo: null,
+    zoomTo: [],
+    createLayerMode: [],
   }
 
   componentDidUpdate = () => {
@@ -68,6 +39,16 @@ class App extends Component {
   }
 
   drawerToggleClickHandler = () => {
+    console.log("HALØKJFASKJFLSJØF")
+    if (this.state.createLayerMode[0]) {
+      console.log("stop")
+      this.setState({
+        createLayerMode: []
+      })
+    } else {
+      this.state.createLayerMode.push('start')
+      console.log("start")
+    }
     var exfile = { "type": "FeatureCollection",
     "features": [
       { "type": "Feature",
@@ -107,7 +88,6 @@ class App extends Component {
       file: file
     });  
   }
-
 
   handleListItemClick = (event, index) => {
     this.setState({
@@ -197,7 +177,12 @@ class App extends Component {
     e.visibility = !e.visibility
   }
 
-
+  clickCreateMode = (click) => {
+    if (this.state.createLayerMode === undefined || this.state.createLayerMode == 0) {
+      console.log(click)
+      // var layer = L.Point(latlngs).addTo(map);
+    }
+  }
 
 
   resetFile = () => {
@@ -234,13 +219,14 @@ class App extends Component {
         height: '100%',
         width: '100%'}}>
         <div style={{
-          height: '100%',
-          width: '19%',
+          height: '100vh - 46px',
+          width: '19.5vw',
           position: 'absolute',
-          marginTop: "56px",
+          marginTop: "46px",
+          marginLeft: "0.1vw",
           }}>
           <MyDropzone 
-            handleNewFile={this.handleNewFile} 
+            handleNewFile={this.handleNewFile}  
           />
           <LayerList 
           handleListItemClick={this.handleListItemClick} 
@@ -249,8 +235,9 @@ class App extends Component {
           orderLayers={this.orderLayers} 
           onDelete={this.handleDelete}
           toggleVisibility={this.toggleVisibility}
-          zoomToLayer={this.zoomToLayer}
+          zoomTo={this.state.zoomTo}
           />
+
                     
         </div>
         <Toolbar 
@@ -258,7 +245,7 @@ class App extends Component {
         layers={this.state.layers}
         handleNewFile={this.handleNewFile}
         />
-        <main style={{paddingTop: '56px', paddingLeft: '300px', zIndex: "-1"}}>
+        <main style={{marginLeft: '20vw', height: '100vh', width: '80vw', overflow: 'auto', zIndex: "-1999"}}>
           <Map  
             addLayer={this.addLayer}
             createLayer={this.createLayer}
@@ -274,6 +261,7 @@ class App extends Component {
             hide={this.state.hide}
             unhide={this.state.unhide}
             zoomTo={this.state.zoomTo}
+            createLayerMode={this.state.createLayerMode}
           />
           </main>
 

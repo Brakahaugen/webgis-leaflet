@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 // layers: the layers we have at disposal
 // tools: the tools we have at disposal.
 // typeText: The text associated with the type of selector
-export default function ControlledOpenSelect({initialParam, type, layers, tools, typeText, setParentValue}) {
+export default function ControlledOpenSelect({initialParam, type, layers, tools, setParentValue}) {
   const classes = useStyles();
   const [value, setValue] = React.useState(initialParam);
   const [open, setOpen] = React.useState(false);
@@ -44,9 +44,6 @@ export default function ControlledOpenSelect({initialParam, type, layers, tools,
 
   return (
     <div>
-      <DialogContentText>
-        {typeText}
-      </DialogContentText>
       <form autoComplete="off">
         <FormControl className={classes.formControl}>
           <InputLabel htmlFor="selector">{type}</InputLabel>
