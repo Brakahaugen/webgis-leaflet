@@ -1,6 +1,7 @@
 import React from 'react';
 import ProcessForm from '../Processing/ProcessForm'
 import DrawerToggleButton from '../SideDrawer/DrawerToggleButton';
+import CreateLayerMenu from '../Generation/CreateLayerMenu.js';
 import './Toolbar.css';
 
 const toolbar = props => (
@@ -9,15 +10,19 @@ const toolbar = props => (
         <div className="toolbar__toggle-button">
             <DrawerToggleButton click={props.drawerClickHandler} />
         </div>
-        <div></div>
         <div className="spacer" />
         <div className="toolbar_navigation-items">
-            <ul>
+          <CreateLayerMenu 
+            createLayerMode={props.createLayerMode}
+            toggleCreateMode={props.toggleCreateMode}
+          />
+        </div>
+        <div className="minispacer" />
+        <div className="toolbar_navigation-items">
               <ProcessForm 
                 layers={props.layers} 
                 handleNewFile={props.handleNewFile}
               />
-            </ul>
         </div>
     </nav>
   </header>

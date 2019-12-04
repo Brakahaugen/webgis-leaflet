@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  background: #d8d8d8;
+  background: #e06868;
   height: 56px;
   z-index: 1000;
 }
@@ -29,11 +29,16 @@
   flex: 1;
 }
 
+.minispacer {
+  flex: 0.1;
+}
+
 .toolbar_navigation-items ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
+  text-align:center;
 }
 
 .toolbar_navigation-items li {

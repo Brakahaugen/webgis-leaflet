@@ -62,6 +62,7 @@ class LayerList extends Component {
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
     if (this.props.layers !== prevProps.layers) {
+
       this.setState({
         items: this.props.layers
       });      

@@ -2,15 +2,12 @@ import React from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
+import { create } from 'domain';
 
 const Wrapper = styled.div`
     width: ${props => props.width};
     height: ${props => props.height}; 
 `;
-
-function onPolyClick(e) {
-    alert("You clicked the map at " + e.latlng);
-}
 
 function createPopup(feature, layer) {
 	// does this feature have a property named popupContent?
@@ -18,8 +15,6 @@ function createPopup(feature, layer) {
 		layer.bindPopup(feature.properties.name);
 	}
 }
-
-
 
 export default class Map extends React.Component {
 
@@ -31,7 +26,11 @@ export default class Map extends React.Component {
 
   state = {
     file: this.props.file,
+    createLayerMode: this.props.createLayerMode,
+    createdLayer: null,
   }
+
+  
 
   componentDidMount = () => {
     this.map = L.map('map', {
@@ -46,10 +45,80 @@ export default class Map extends React.Component {
         }),
     });
     this.map.on('layeradd', this.props.addLayer);
-    this.map.on('click', this.props.clickCreateMode)
+    this.map.on('click', this.props.clickCreateLayer)
   }
 
-  componentDidUpdate = () => {
+  componentDidUpdate = (prevProps) => {
+    console.log(prevProps)
+    console.log(this.props)
+
+    try {
+    //If createlayermode just swapped to false or clickedpoints length just swapped to zero.
+    if (((prevProps.createLayerMode != false) && (!this.props.createLayerMode)) || ((prevProps.clickedPoints.length != 0) && (this.props.clickedPoints.length == 0))) {
+      console.log("YOUAG")
+      //If the createlayermode just was switched off:
+      this.map.removeLayer(this.state.layer)
+      //reversing coordinates to make them geojson order.
+      let coordinates = prevProps.clickedPoints
+      coordinates.forEach(latlng => {
+        latlng.reverse();
+      });
+      console.log("creating layer! WOOOHOOO")
+
+      let thisThing = {
+        "type": "Feature",
+        "name": "Created layer",
+        "geometry": {
+            "type": prevProps.createLayerMode,
+            "coordinates": coordinates,
+        },
+      }
+      console.log(thisThing)
+      console.log(prevProps.createLayerMode);
+      if(prevProps.createLayerMode == "Polygon") {
+        console.log("change the rules")
+        coordinates = [coordinates]
+      }
+      this.createLayer(
+              {
+                "type": "Feature",
+                "name": "Created layer",
+                "geometry": {
+                    "type": prevProps.createLayerMode,
+                    "coordinates": coordinates,
+                },
+              }
+              )
+
+      this.setState({
+        layer: null,
+      })
+      return
+    }
+  } catch {console.log("nevermind")}
+
+    //Add new points
+    //If new points was added: or layermode was changed
+    if ((this.props.clickedPoints.length != prevProps.clickedPoints.length) || (this.props.createLayerMode != prevProps.createLayerMode)) {
+      console.log("CLICKED POINTS CHANGED LETS GO")
+       if (this.state.layer != null) {
+        this.map.removeLayer(this.state.layer)
+      }
+      let newLayer;
+      if (this.props.createLayerMode == "LineString") {
+        newLayer = L.polyline(this.props.clickedPoints, {color: 'green'}).addTo(this.map);
+      } else if (this.props.createLayerMode == "Polygon") {
+        newLayer = L.polygon(this.props.clickedPoints, {color: 'green'}).addTo(this.map);
+      }
+      // } else if (this.props.createLayerMode == "MultiPoint") {
+      //   newLayer = L.polyline(this.props.clickedPoints, {color: 'red'}).addTo(this.map);
+      // } 
+
+      this.setState({
+        layer: newLayer,
+      })  
+    }
+
     //Create file from new imported geojson
     if (this.props.file) {
       this.createLayer(this.props.file);
@@ -99,7 +168,7 @@ export default class Map extends React.Component {
 
     //Creating a new layer from geojson-data
   createLayer = (geojsonData) => {
-
+    console.log("creating a geojsonlayer")
     let geoj = L.geoJSON(geojsonData, {
       pointToLayer: function (feature, latlng) {
           return L.circleMarker(latlng, {

@@ -24,6 +24,8 @@ import { IconButton, Snackbar } from '@material-ui/core';
 import SimpleSnackbar from './Snackbar'
 import preProcess from "./preProcess.js";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Fab from '@material-ui/core/Fab';
+
 
 
 const classes = makeStyles(theme => ({
@@ -31,7 +33,7 @@ const classes = makeStyles(theme => ({
     display: 'block',
     marginTop: theme.spacing(2),
     color: 'white',
-    floodColor: 'white'
+    floodColor: 'black'
   },
   formControl: {
     margin: theme.spacing(1),
@@ -301,10 +303,12 @@ export default class ProcessForm extends React.Component {
 
     return (
       <div>
-        <IconButton onClick={this.handleClickOpen}> {/* variant="outlined" background-color="white" o */}
-         {"Geoprocess" + this.state.snackbar}
-          <BuildIcon />
-        </IconButton>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={this.handleClickOpen}
+        ><BuildIcon />Geoprocess</Button>
         <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Processing Tools</DialogTitle>
           <DialogContent>

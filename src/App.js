@@ -27,54 +27,32 @@ class App extends Component {
     selectedIndex: null,
     file: null,
     deletedLayers: [],
-    deletedLayer: null,
+    deletedLayer: null, 
     hide: null,
     unhide: null,
     zoomTo: [],
-    createLayerMode: [],
+    createLayerMode: false,
+    clickedPoints: [],
+    // createdLayer: null,
   }
 
   componentDidUpdate = () => {
     console.log(this.state.layers)
+    console.log("mode: " + this.state.createLayerMode)
   }
 
   drawerToggleClickHandler = () => {
-    console.log("HALØKJFASKJFLSJØF")
-    if (this.state.createLayerMode[0]) {
-      console.log("stop")
-      this.setState({
-        createLayerMode: []
-      })
-    } else {
-      this.state.createLayerMode.push('start')
-      console.log("start")
-    }
-    var exfile = { "type": "FeatureCollection",
-    "features": [
-      { "type": "Feature",
-        "geometry": {"type": "Point", "coordinates": [10.3888517,63.4279697]},
-        "properties": {"prop0": "value0"}
-        },
-      { "type": "Feature",
-        "geometry": {"type": "Point", "coordinates": [10.3898517,63.4279697]},
-        "properties": {"prop0": "value0"}
-        },
-      { "type": "Feature",
-        "geometry": {"type": "Point", "coordinates": [10.3898517,63.4289697]},
-        "properties": {"prop0": "value0"}
-        },
-      { "type": "Feature",
-        "geometry": {"type": "Point", "coordinates": [10.3888517,63.4289697]},
-        "properties": {"prop0": "value0"}
-        },
-      ]
-    }
-      console.log("handling")
-      this.handleNewFile(exfile)
     this.setState((prevState) => {
       return {sideDrawerOpen: !prevState.sideDrawerOpen};
     });
   };
+
+  toggleCreateMode = (event) => {
+    this.setState({
+      createLayerMode: event,
+      clickedPoints: [],
+    })
+  }
 
   openGeoProcess = () => {}
 
@@ -135,13 +113,26 @@ class App extends Component {
   addLayer = (layer) => {
     //Checks if the layer exists from before
     let existingLayer = this.state.layers.find(l => l.layer._leaflet_id == layer.layer._leaflet_id)
+    console.log("Hello mr. bond")
 
     if (layer.layer._layers && !layer.layer._svgSize && existingLayer == undefined) {
       console.log(layer)
       console.log(this.state.layers)
       console.log(layer === this.state.layers[0])
-      this.state.layers.push(layer);
+      //this.state.layers.push(layer);
+      this.setState({
+        layers: [...this.state.layers, layer],
+      })
       layer.key = layer.layer._leaflet_id
+    } 
+  }
+
+  clickCreateLayer = (e) => {
+    if (this.state.createLayerMode != false) {
+      this.setState({
+        clickedPoints: [...this.state.clickedPoints, [e.latlng.lat, e.latlng.lng]]
+      })
+      console.log(this.state.clickedPoints)
     } 
   }
 
@@ -177,12 +168,12 @@ class App extends Component {
     e.visibility = !e.visibility
   }
 
-  clickCreateMode = (click) => {
-    if (this.state.createLayerMode === undefined || this.state.createLayerMode == 0) {
-      console.log(click)
-      // var layer = L.Point(latlngs).addTo(map);
-    }
-  }
+  // clickCreateMode = (click) => {
+  //   if (this.state.createLayerMode === undefined || this.state.createLayerMode == 0) {
+  //     console.log(click)
+  //     // var layer = L.Point(latlngs).addTo(map);
+  //   }
+  // }
 
 
   resetFile = () => {
@@ -244,11 +235,13 @@ class App extends Component {
         drawerClickHandler={this.drawerToggleClickHandler} 
         layers={this.state.layers}
         handleNewFile={this.handleNewFile}
+        toggleCreateMode={this.toggleCreateMode}
+        createLayerMode={this.state.createLayerMode}
         />
         <main style={{marginLeft: '20vw', height: '100vh', width: '80vw', overflow: 'auto', zIndex: "-1999"}}>
           <Map  
             addLayer={this.addLayer}
-            createLayer={this.createLayer}
+            // createLayer={this.clickCreateMode}
             highlightFeature={this.highlightFeature}
             resetHighlight={this.resetHighlight}
             selectLayer={this.selectLayer}
@@ -262,6 +255,9 @@ class App extends Component {
             unhide={this.state.unhide}
             zoomTo={this.state.zoomTo}
             createLayerMode={this.state.createLayerMode}
+            clickCreateLayer={this.clickCreateLayer}
+            clickedPoints={this.state.clickedPoints}
+            // createdLayer={this.state.createdLayer}
           />
           </main>
 
