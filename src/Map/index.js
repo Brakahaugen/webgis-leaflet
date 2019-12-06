@@ -34,8 +34,8 @@ export default class Map extends React.Component {
 
   componentDidMount = () => {
     this.map = L.map('map', {
-        center: [63.43,10.4],
-        zoom: 14,
+        center: [40.7292369,-73.996565],
+        zoom: 13,
         zoomControl: false,
         layers: L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png', {
           // 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?'
@@ -49,46 +49,37 @@ export default class Map extends React.Component {
   }
 
   componentDidUpdate = (prevProps) => {
-    console.log(prevProps)
-    console.log(this.props)
 
     try {
-    //If createlayermode just swapped to false or clickedpoints length just swapped to zero.
-    if (((prevProps.createLayerMode != false) && (!this.props.createLayerMode)) || ((prevProps.clickedPoints.length != 0) && (this.props.clickedPoints.length == 0))) {
-      console.log("YOUAG")
-      //If the createlayermode just was switched off:
+
+      
+      //If createlayermode just swapped to false or clickedpoints length just swapped to zero.
+    if (((prevProps.createLayerMode != false) && (this.props.createLayerMode == false)) || ((prevProps.clickedPoints.length != 0) && (this.props.clickedPoints.length == 0))) {
+      
       this.map.removeLayer(this.state.layer)
+
       //reversing coordinates to make them geojson order.
       let coordinates = prevProps.clickedPoints
       coordinates.forEach(latlng => {
         latlng.reverse();
       });
-      console.log("creating layer! WOOOHOOO")
 
-      let thisThing = {
-        "type": "Feature",
-        "name": "Created layer",
-        "geometry": {
-            "type": prevProps.createLayerMode,
-            "coordinates": coordinates,
-        },
-      }
-      console.log(thisThing)
-      console.log(prevProps.createLayerMode);
       if(prevProps.createLayerMode == "Polygon") {
         console.log("change the rules")
+        coordinates = [...coordinates, coordinates[0]]
         coordinates = [coordinates]
       }
+
       this.createLayer(
               {
                 "type": "Feature",
-                "name": "Created layer",
+                "name": "Created " + prevProps.createLayerMode,
                 "geometry": {
                     "type": prevProps.createLayerMode,
                     "coordinates": coordinates,
                 },
               }
-              )
+      )
 
       this.setState({
         layer: null,
@@ -100,7 +91,6 @@ export default class Map extends React.Component {
     //Add new points
     //If new points was added: or layermode was changed
     if ((this.props.clickedPoints.length != prevProps.clickedPoints.length) || (this.props.createLayerMode != prevProps.createLayerMode)) {
-      console.log("CLICKED POINTS CHANGED LETS GO")
        if (this.state.layer != null) {
         this.map.removeLayer(this.state.layer)
       }
@@ -142,10 +132,11 @@ export default class Map extends React.Component {
       this.map.addLayer(this.props.unhide)
       this.props.resetFile();
     }
-    else if (this.props.zoomTo[0]) {
-      console.log(this.props.zoomTo)
-      return this.map.fitBounds(this.props.zoomTo[0].target.getBounds())
-      // this.map.fitBounds()
+    else if (this.props.zoomTo.length != 0) {
+      console.log(this.props.zoomTo[0])
+      this.props.resetZoom()
+
+      return this.map.fitBounds(this.props.zoomTo[0].layer.getBounds())
     }
   }
   
@@ -168,6 +159,7 @@ export default class Map extends React.Component {
 
     //Creating a new layer from geojson-data
   createLayer = (geojsonData) => {
+
     console.log("creating a geojsonlayer")
     let geoj = L.geoJSON(geojsonData, {
       pointToLayer: function (feature, latlng) {
@@ -177,10 +169,10 @@ export default class Map extends React.Component {
             color: "#000",
             weight: 1,
             opacity: 1,
-            fillOpacity: 0.8
+            fillOpacity: 0.9,
           });
       },
-      style: {color: "#0000ff"},
+      style: {color: '#'+Math.floor(Math.random()*16777215).toString(16), fillOpacity: 0.9},
       onEachFeature: this.onEachFeature,
       }).addTo(this.map);
 

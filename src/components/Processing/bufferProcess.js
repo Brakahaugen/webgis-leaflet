@@ -4,6 +4,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import React from 'react';
 
 export default function createBuffer(input, dist, toggleSnack) {
+  
+
 
   toggleSnack("Validating input...", "info")
   try {
@@ -11,7 +13,14 @@ export default function createBuffer(input, dist, toggleSnack) {
       "type": "FeatureCollection",
       "features": [],
     } 
+
+    console.log(input)
+    console.log(input.layer)
+
+
     input.layer.eachLayer(function (layer) {
+      console.log(layer)
+      console.log(layer.feature)
       collection.features.push(layer.feature)
     });
     toggleSnack("Validation complete. Continuing with buffer-operation...", "info")
@@ -27,7 +36,7 @@ export default function createBuffer(input, dist, toggleSnack) {
       dist,
       {units: "kilometers"},
     )
-
+    console.log(buffered)
     return buffered;
       
   } catch {

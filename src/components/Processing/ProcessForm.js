@@ -25,6 +25,7 @@ import SimpleSnackbar from './Snackbar'
 import preProcess from "./preProcess.js";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Fab from '@material-ui/core/Fab';
+import createClip from './clipProcess';
 
 
 
@@ -53,7 +54,7 @@ export default class ProcessForm extends React.Component {
         layers: this.props.layers,
         selectedToolIndex: -1,
         open: false,
-        tools: ['UNION', 'BUFFER', 'INTERSECT', 'SIMPLIFY'],
+        tools: ['UNION', 'BUFFER', 'INTERSECT', 'SIMPLIFY', "CLIP"],
         parameters: [],
         param1: null,
         param2: null,
@@ -171,8 +172,15 @@ export default class ProcessForm extends React.Component {
       case "SIMPLIFY":
         file = createSimplify(json1, dist, this.toggleSnackbar)
         break;
+        
+      case "CLIP":
+        file = createClip(json1, json2, this.toggleSnackbar)
+      break;
     }
-    this.props.handleNewFile(file);
+    if (file != null) {
+      this.props.handleNewFile(file);
+      this.toggleSnackbar("...Success!", "success")
+    }
 
     this.setState({
       open: false,
@@ -298,6 +306,32 @@ export default class ProcessForm extends React.Component {
         <DialogContentText>
           {"Insert tolerance factor. Must be higher than 0."}
         </DialogContentText>
+      break;
+
+      case 4: //CLIP 
+        selector = 
+          <div>
+            <DialogContentText>
+              {'Choose the layer you want to clip.'} 
+            </DialogContentText>
+
+            <div style={{display: "flex"}}>
+            <ControlledOpenSelect 
+              setParentValue={this.setParam}
+              initialParam={-1} 
+              tools={this.state.tools} 
+              layers={this.props.layers} 
+              type={'Input line-layer'} 
+            />
+            <ControlledOpenSelect 
+              setParentValue={this.setParam2}
+              initialParam={-1} 
+              tools={this.state.tools} 
+              layers={this.props.layers} 
+              type={'clip on polygon:'} 
+            />
+            </div>
+        </div>
       break;
     }
 

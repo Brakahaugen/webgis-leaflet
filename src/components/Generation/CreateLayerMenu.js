@@ -51,7 +51,7 @@ export default class CreateLayerMenu extends React.Component {
         icon: <AddIcon>kjøasdf</AddIcon>,
         text: "create new layer",
         color: "primary",
-        type: "LineString",
+        type: "Polygon",
         // snackbarMsg: "",
         // snackbarType: "",
       };  
@@ -65,15 +65,14 @@ export default class CreateLayerMenu extends React.Component {
     }
   }
 
-  handleOpen = () => {
+  handleOpen = (e = "Polygon") => {
     this.setState({
       open: true,
       icon: <SaveIcon />,
       text: "Save layer",
       color: "default",
-      type: "LineString",
     });    
-    this.props.toggleCreateMode(this.state.type)
+    this.props.toggleCreateMode(e)
   };
 
   handleClose = () => {
@@ -94,54 +93,32 @@ export default class CreateLayerMenu extends React.Component {
     });  
   };
 
-  // toggleSnackbar = (msg, type) => {
-  //   if ((typeof msg === 'string' || msg instanceof String) && (typeof type === 'string' || type instanceof String)) {
-  //     console.log(msg)
-  //     console.log(type)
-  //     this.setState({
-  //       snackbar: true,
-  //       snackbarMsg: msg,
-  //       snackbarType: type,
-  //     })
-  //   } else if (type !== "clickaway") {
-  //     //Hmmm....
-  //     this.setState({
-  //       snackbar: false,
-  //       snackbarMsg: "",
-  //       snackbarType: "",
-  //     })
-  //   }
-  // }
-
-
-
-
-  // displaySnackbar = () => {
-  //   let snackbar = ( 
-  //     <SimpleSnackbar
-  //       open={this.state.snackbar}
-  //       toggleSnackbar={this.toggleSnackbar}
-  //       msgType={this.state.snackbarType ? this.state.snackbarType: "success"}//success, warning, error, info
-  //       msg={this.state.snackbarMsg ? this.state.snackbarMsg: "hello"}//Input: string of mesage
-  //     />)      
-
-  //   console.log(snackbar)
-  //   return snackbar
-  // }
-
   render() {
 
     return (
       <div style={{spacing: 50}}>
         {this.state.open ? 
-        <Select
-          value={this.state.type}
-          onChange={this.handleSelect}
-        >
-          <MenuItem value={"LineString"}>LineString</MenuItem>
-          <MenuItem value={"Polygon"}>Polygon</MenuItem>
-          <MenuItem value={"MultiPoint"}>MultiPoint</MenuItem>
-        </Select>: ""}
+          <Select
+            value={this.state.type}
+            onChange={this.handleSelect}
+          >
+            <MenuItem value={"LineString"}>LineString</MenuItem>
+            <MenuItem value={"Polygon"}>Polygon</MenuItem>
+            <MenuItem value={"B"}>BBox</MenuItem>
+
+          </Select>
+          : ""}
+{/*           
+        {this.state.open ? 
+          <Button
+            variant="contained"
+            color={this.state.color}
+            className={classes.button}
+            onClick={this.handleClose("quit")}
+          >
+            <CloseIcon />
+          </Button>: ""} */}
+
         <Button
           variant="contained"
           color={this.state.color}
@@ -150,11 +127,6 @@ export default class CreateLayerMenu extends React.Component {
         >
           {this.state.icon}{this.state.text}
         </Button>
-
-
-        
-        {/* {this.state.snackbar ? this.displaySnackbar(): ""} */}
-        
       </div>
     );
   }

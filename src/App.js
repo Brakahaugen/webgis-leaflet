@@ -37,8 +37,7 @@ class App extends Component {
   }
 
   componentDidUpdate = () => {
-    console.log(this.state.layers)
-    console.log("mode: " + this.state.createLayerMode)
+    
   }
 
   drawerToggleClickHandler = () => {
@@ -48,10 +47,20 @@ class App extends Component {
   };
 
   toggleCreateMode = (event) => {
-    this.setState({
-      createLayerMode: event,
-      clickedPoints: [],
-    })
+    if ((event == false) || (event == "quit")) {
+      this.setState({
+        createLayerMode: event,
+        clickedPoints: [],
+      })
+    } else if (event == "reset") {
+      this.setState({
+        clickedPoints: []
+      })
+    } else {
+      this.setState({
+        createLayerMode: event,
+      })
+    }
   }
 
   openGeoProcess = () => {}
@@ -61,7 +70,6 @@ class App extends Component {
   };
 
   handleNewFile = (file) => {
-    console.log(file);
     this.setState({
       file: file
     });  
@@ -70,6 +78,7 @@ class App extends Component {
   handleListItemClick = (event, index) => {
     this.setState({
       selectedIndex: index,
+      zoomTo: [this.state.layers[index]],
     });
 
     try {
@@ -77,7 +86,7 @@ class App extends Component {
     } catch {
       console.log("could not find name");
     }
-//    this.highlightFeature(this.state.layers[index])
+
   };
 
 
@@ -106,19 +115,16 @@ class App extends Component {
     this.setState({
        layers: newLayers
     })
-    //should implement here that you can redo it.
+    for (var i = 0; i < this.state.layers.length;  i++) {
+
+    }
   };
 
 
   addLayer = (layer) => {
     //Checks if the layer exists from before
     let existingLayer = this.state.layers.find(l => l.layer._leaflet_id == layer.layer._leaflet_id)
-    console.log("Hello mr. bond")
-
     if (layer.layer._layers && !layer.layer._svgSize && existingLayer == undefined) {
-      console.log(layer)
-      console.log(this.state.layers)
-      console.log(layer === this.state.layers[0])
       //this.state.layers.push(layer);
       this.setState({
         layers: [...this.state.layers, layer],
@@ -148,9 +154,14 @@ class App extends Component {
   }
 
   zoomToLayer = (e) => {
-    console.log("KJØASKFJØASJFKKASFJØ")
     this.setState({
       zoomTo: e
+    })
+  }
+
+  resetZoom = () => {
+    this.setState({
+      zoomTo: [],
     })
   }
 
@@ -167,14 +178,6 @@ class App extends Component {
     }
     e.visibility = !e.visibility
   }
-
-  // clickCreateMode = (click) => {
-  //   if (this.state.createLayerMode === undefined || this.state.createLayerMode == 0) {
-  //     console.log(click)
-  //     // var layer = L.Point(latlngs).addTo(map);
-  //   }
-  // }
-
 
   resetFile = () => {
     this.setState({
@@ -254,6 +257,7 @@ class App extends Component {
             hide={this.state.hide}
             unhide={this.state.unhide}
             zoomTo={this.state.zoomTo}
+            resetZoom={this.resetZoom}
             createLayerMode={this.state.createLayerMode}
             clickCreateLayer={this.clickCreateLayer}
             clickedPoints={this.state.clickedPoints}

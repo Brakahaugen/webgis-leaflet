@@ -44,12 +44,17 @@ const DisplayDialog = (props) => {
   }
 
   const doChanges = () => {
-    props.item.layer.name = name
-    if (newColor) {
+    console.log(name)
+    if ((name != "") && (name != undefined)) {
+      props.item.layer.name = name
+    } 
+    console.log(newColor)
+    console.log(props.item.layer.options.style.color)
+    if ((newColor != undefined) && (newColor.hex != props.item.layer.options.style.color))  {
       props.item.layer.setStyle({ 
         weight: 2,
         dashArray: '',
-        fillOpacity: 0.6,
+        fillOpacity: 0.9,
         fillColor: newColor.hex,
         color: newColor.hex
       })
