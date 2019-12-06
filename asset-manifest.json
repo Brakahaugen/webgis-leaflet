@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/webgis-leaflet/static/css/main.2129e47f.chunk.css",
+    "main.js": "/webgis-leaflet/static/js/main.fd4029f2.chunk.js",
+    "main.js.map": "/webgis-leaflet/static/js/main.fd4029f2.chunk.js.map",
+    "runtime-main.js": "/webgis-leaflet/static/js/runtime-main.4c24673b.js",
+    "runtime-main.js.map": "/webgis-leaflet/static/js/runtime-main.4c24673b.js.map",
+    "static/css/2.847213c2.chunk.css": "/webgis-leaflet/static/css/2.847213c2.chunk.css",
+    "static/js/2.5dbe5a62.chunk.js": "/webgis-leaflet/static/js/2.5dbe5a62.chunk.js",
+    "static/js/2.5dbe5a62.chunk.js.map": "/webgis-leaflet/static/js/2.5dbe5a62.chunk.js.map",
+    "index.html": "/webgis-leaflet/index.html",
+    "precache-manifest.303b7eb32979d7f13d63505092134687.js": "/webgis-leaflet/precache-manifest.303b7eb32979d7f13d63505092134687.js",
+    "service-worker.js": "/webgis-leaflet/service-worker.js",
+    "static/css/2.847213c2.chunk.css.map": "/webgis-leaflet/static/css/2.847213c2.chunk.css.map",
+    "static/css/main.2129e47f.chunk.css.map": "/webgis-leaflet/static/css/main.2129e47f.chunk.css.map"
+  }
+}
