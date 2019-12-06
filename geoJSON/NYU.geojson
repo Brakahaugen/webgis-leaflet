@@ -1,0 +1,17 @@
+{
+  "type": "FeatureCollection",
+  "name": "New York University",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+		-73.996565,
+		40.7292369
+        ]
+      }
+    }
+  ]
+}
