@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "2fb42da76fcb3f378a60e8210cdef6c6",
+    "revision": "0afc806cb714bf386780d7101521daa4",
     "url": "/webgis-leaflet/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/webgis-leaflet/static/css/2.847213c2.chunk.css"
   },
   {
-    "revision": "a717be4affb239a5e1f0",
+    "revision": "a46a030f6b86678f67fc",
     "url": "/webgis-leaflet/static/css/main.2129e47f.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/webgis-leaflet/static/js/2.b2b11ffe.chunk.js"
   },
   {
-    "revision": "a717be4affb239a5e1f0",
-    "url": "/webgis-leaflet/static/js/main.ad93c8b7.chunk.js"
+    "revision": "a46a030f6b86678f67fc",
+    "url": "/webgis-leaflet/static/js/main.fd19cee2.chunk.js"
   },
   {
     "revision": "6281b9f709c0b964e76b",
