@@ -37,7 +37,7 @@ class App extends Component {
   }
 
   componentDidUpdate = () => {
-    
+    console.log(this.state.layers)
   }
 
   drawerToggleClickHandler = () => {

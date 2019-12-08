@@ -28,9 +28,9 @@ function MyDropzone(props) {
            <input {...getInputProps()} />
            {
              isDragActive ?
-              <p style={{height: "75px",  position: "flex", textAlign: "center", border: "dashed", boxShadow: "10", background: "lightgreen"}}><PublishIcon /></p>:
+              <p style={{height: "75px",  position: "flex", textAlign: "center", border: "dashed", borderRadius: "8px", boxShadow: "10", background: "lightgreen"}}><PublishIcon /></p>:
               <div>
-               <p style={{height: "75px", position: "flex", textAlign: "center", border: "dashed"}}><PublishIcon /><p>Click or drag to add files!</p></p>
+               <p style={{height: "75px", position: "flex", textAlign: "center", borderRadius: "8px", border: "dashed"}}><PublishIcon /><p>Click or drag to add files!</p></p>
                
               </div>
            }

@@ -16,6 +16,7 @@ import createBuffer from './bufferProcess';
 import createUnion from './unionProcess';
 import createIntersect from './intersectProcess';
 import createSimplify from './simplifyProcess';
+import createDifference from './differenceProcess';
 import Input from '@material-ui/core/Input';
 import BuildIcon from '@material-ui/icons/Build';
 import CloseIcon from '@material-ui/icons/Close';
@@ -54,7 +55,7 @@ export default class ProcessForm extends React.Component {
         layers: this.props.layers,
         selectedToolIndex: -1,
         open: false,
-        tools: ['UNION', 'BUFFER', 'INTERSECT', 'SIMPLIFY', "CLIP"],
+        tools: ['UNION', 'BUFFER', 'INTERSECT', 'SIMPLIFY', "CLIP", "DIFFERENCE"],
         parameters: [],
         param1: null,
         param2: null,
@@ -176,6 +177,11 @@ export default class ProcessForm extends React.Component {
       case "CLIP":
         file = createClip(json1, json2, this.toggleSnackbar)
       break;
+
+      case "DIFFERENCE":
+        file = createDifference([json1, json2], this.toggleSnackbar)
+      break;
+
     }
     if (file != null) {
       this.props.handleNewFile(file);
@@ -329,6 +335,32 @@ export default class ProcessForm extends React.Component {
               tools={this.state.tools} 
               layers={this.props.layers} 
               type={'clip on polygon:'} 
+            />
+            </div>
+        </div>
+      break;
+
+      case 5: //DIFFERENCE
+        selector = 
+          <div>
+            <DialogContentText>
+              {'Choose the layer and the layer you want to remove.'} 
+            </DialogContentText>
+
+            <div style={{display: "flex"}}>
+            <ControlledOpenSelect 
+              setParentValue={this.setParam}
+              initialParam={-1} 
+              tools={this.state.tools} 
+              layers={this.props.layers} 
+              type={'Input'} 
+            />
+            <ControlledOpenSelect 
+              setParentValue={this.setParam2}
+              initialParam={-1} 
+              tools={this.state.tools} 
+              layers={this.props.layers} 
+              type={'Minus this layer:'} 
             />
             </div>
         </div>

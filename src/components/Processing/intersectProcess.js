@@ -58,25 +58,25 @@ export default function createIntersect(input, toggleSnack) {
     var intersections = []    
     console.log(features2)
     console.log(features1)
-    try {
-        features1.forEach(f1 => {
-            features2.forEach(f2 => {
-                var conflict = null;
-                    try {
-                        console.log(f1)
-                        console.log(f2)
-                        conflict = turf.intersect(f1, f2)
-                    } catch {
-                        console.log("WTF why you no work")
-                    }
-                // }
-                if (conflict !== null) {
-                    intersections.push(conflict);
-                }   
-            })
-        })
-        console.log(intersections)
-    } catch {
+    // try {
+    //     features1.forEach(f1 => {
+    //         features2.forEach(f2 => {
+    //             var conflict = null;
+    //                 try {
+    //                     console.log(f1)
+    //                     console.log(f2)
+    //                     conflict = turf.intersect(f1, f2)
+    //                 } catch {
+    //                     console.log("WTF why you no work")
+    //                 }
+    //             // }
+    //             if (conflict !== null) {
+    //                 intersections.push(conflict);
+    //             }   
+    //         })
+    //     })
+    //     console.log(intersections)
+    // } catch {
         console.log("did not intersect properly")
         try {
             features1.forEach(f1 => {
@@ -99,7 +99,7 @@ export default function createIntersect(input, toggleSnack) {
             toggleSnack("Could not generate the intersection. Contact your highest superior", "error")
             return null
         }
-    }
+    // }
     
 
 

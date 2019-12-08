@@ -12,6 +12,7 @@ export default function createClip(input, mask, toggleSnack) {
   try {
     var inputCollection = {
       "type": "FeatureCollection",
+      "name":  input.layer.name + "_clipped",
       "features": [],
     }
 

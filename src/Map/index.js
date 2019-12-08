@@ -133,10 +133,10 @@ export default class Map extends React.Component {
       this.props.resetFile();
     }
     else if (this.props.zoomTo.length != 0) {
-      console.log(this.props.zoomTo[0])
+      try {
+        return this.map.fitBounds(this.props.zoomTo[0].layer.getBounds())
+      } catch {}
       this.props.resetZoom()
-
-      return this.map.fitBounds(this.props.zoomTo[0].layer.getBounds())
     }
   }
   

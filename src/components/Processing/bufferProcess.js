@@ -36,6 +36,7 @@ export default function createBuffer(input, dist, toggleSnack) {
       dist,
       {units: "kilometers"},
     )
+    buffered.name =  input.layer.name + " " + dist + "km_buffer"
     console.log(buffered)
     return buffered;
       

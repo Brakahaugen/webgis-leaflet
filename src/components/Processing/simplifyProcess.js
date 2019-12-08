@@ -9,6 +9,7 @@ export default function createSimplify(input, tol, toggleSnack) {
   //and populating by the features from the leaflet layers.
   var collection = {
     "type": "FeatureCollection",
+    "name": "simplified" + tol + input.layer.name,
     "features": [],
   } 
   input.layer.eachLayer(function (layer) {

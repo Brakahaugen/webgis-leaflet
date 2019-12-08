@@ -5,7 +5,8 @@ import {
   ListItemText,
   ListItemIcon,
   IconButton,
-  ListItemSecondaryAction
+  ListItemSecondaryAction,
+  Paper
 } from "@material-ui/core";
 import RootRef from "@material-ui/core/RootRef";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -31,13 +32,16 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle,
 
   ...(isDragging && {
-    background: "rgb(235,235,235)"
+    background: "rgb(235,235,235)",
+    borderRadius: "8px",
   })
 });
 
 const getliStyle = (isDraggingOver, item) => ({
   border: isDraggingOver ? '' : 'solid',
   margin: "0 0 5px 0",
+  borderRadius: "8px",
+  //borderColor: item.layer.options.style.color
   //backgroundColor: isDraggingOver ? '' : item.layer.options.style.color,
 });
 
@@ -127,63 +131,68 @@ class LayerList extends Component {
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
             <RootRef rootRef={provided.innerRef}>
-              <List >
-                {this.props.layers.map((item, index) => (
-                  <li key={item.layer._} style={getliStyle(snapshot.isDraggingOver, item)}>
-                    <Draggable key={item.layer._leaflet_id} draggableId={item.layer._leaflet_id} index={index}>
-                      {(provided, snapshot) => (
-                        <ListItem 
-                          selected={this.props.selectedIndex === index}
-                          onClick={event => this.props.handleListItemClick(event, index)}
-                          onContextMenu={this.rightClick}
-                          ContainerComponent="li"
-                          ContainerProps={{ ref: provided.innerRef }}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={this.state.disableDrag ? console.log() : getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style
-                          )}
-                        >
-                          {/* <ul style={getulStyle(snapshot.isDraggingOver, item)}> */}
-                            <ListItemText 
-                              primary={item.layer.name ? item.layer.name: item.layer._leaflet_id}
-                              //secondary={item.layer._leaflet_id}
-                            />
-                          {/* </ul> */}
-                          <ListItemIcon>
-                            <IconButton id={item.layer._leaflet_id} onClick={() => this.props.toggleVisibility(item.layer)}>
-                              {item.layer.visibility ? visibility: visibilityOff}
-                            </IconButton>
-                          </ListItemIcon>
-                          <IconButton id={item.layer._leaflet_id} onClick={() => this.props.onDelete(item.layer._leaflet_id )}>
-                            <DeleteIcon />
-                          </IconButton>
-                          <div style={{
-                            zIndex: '800'}}>
-                          <DisplayDialog
-                            onClick={() => this.state.disableDrag = true}  
-                            onClose={() => this.state.disableDrag = false}                 
-                            item={item}
-                            heading={"Change display"}
-                            subTexts={[
-                              "Change layer name",
-                              //"Change edgecolor",
-                              // "Change edgesize",
-                            ]}  
+              <Paper style={{maxHeight: "75vh", overflow: 'auto'}}>
+                <List >
+                  {this.props.layers.map((item, index) => (
+                    <li key={item.layer._} style={getliStyle(snapshot.isDraggingOver, item)}>
+                      <Draggable key={item.layer._leaflet_id} draggableId={item.layer._leaflet_id} index={index}>
+                        {(provided, snapshot) => (
+                          <ListItem 
+                            selected={this.props.selectedIndex === index}
+                            onClick={event => this.props.handleListItemClick(event, index)}
+                            onContextMenu={this.rightClick}
+                            ContainerComponent="li"
+                            ContainerProps={{ ref: provided.innerRef }}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={this.state.disableDrag ? console.log() : getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )}
+                          >
+                            {/* <ul style={getulStyle(snapshot.isDraggingOver, item)}> */}
+                              <ListItemText 
+                                primary={item.layer.name ? item.layer.name: item.layer._leaflet_id}
+                                //secondary={item.layer._leaflet_id}
                               />
-                            </div>
-                          {/* <IconButton>
-                            <MoreVertIcon onClick={this.setState({moreOptions: item})}/>
-                          </IconButton> */}
-                          <ListItemSecondaryAction/>
-                        </ListItem>
-                      )}
-                    </Draggable>
-                  </li>
-                ))}
-                {provided.placeholder}
-              </List>
+                            {/* </ul> */}
+                            <ListItemIcon />
+                            <ListItemIcon />
+
+                            <ListItemIcon>
+                              <IconButton id={item.layer._leaflet_id} onClick={() => this.props.toggleVisibility(item.layer)}>
+                                {item.layer.visibility ? visibility: visibilityOff}
+                              </IconButton>
+                            </ListItemIcon>
+                            <IconButton id={item.layer._leaflet_id} onClick={() => this.props.onDelete(item.layer._leaflet_id )}>
+                              <DeleteIcon />
+                            </IconButton>
+                            <div style={{
+                              zIndex: '800'}}>
+                            <DisplayDialog
+                              onClick={() => this.state.disableDrag = true}  
+                              onClose={() => this.state.disableDrag = false}                 
+                              item={item}
+                              heading={"Change display"}
+                              subTexts={[
+                                "Change layer name",
+                                //"Change edgecolor",
+                                // "Change edgesize",
+                              ]}  
+                                />
+                              </div>
+                            {/* <IconButton>
+                              <MoreVertIcon onClick={this.setState({moreOptions: item})}/>
+                            </IconButton> */}
+                            <ListItemSecondaryAction/>
+                          </ListItem>
+                        )}
+                      </Draggable>
+                    </li>
+                  ))}
+                  {provided.placeholder}
+                </List>
+              </Paper>
             </RootRef>
           )}
         </Droppable>
