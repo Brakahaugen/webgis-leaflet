@@ -37,7 +37,7 @@ export default function createClip(input, mask, toggleSnack) {
       var inputType = layer.feature.geometry.type;
       console.log(layer)
       console.log(layer.feature.geometry.type)
-      if (inputType != "Polygon") {
+      if ((inputType != "Polygon") && (inputType != "MultiPolygon")) {
         fail();
       }
       clipMask = layer.feature
@@ -55,7 +55,7 @@ export default function createClip(input, mask, toggleSnack) {
   //Starting with the process.
   if (inputType == "Point") {
     return turf.pointsWithinPolygon(inputCollection, clipMask);
-  } else if (inputType == "Polygon") {
+  } else if ((inputType == "Polygon") || (inputType == "MultiPolygon")) {
     return intersectProcess([input, mask], toggleSnack)
   } else if (inputType == "LineString") {
 

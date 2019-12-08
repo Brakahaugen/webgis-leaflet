@@ -86,7 +86,15 @@ export default function createIntersect(input, toggleSnack) {
                     //     conflict = turf.intersect(f1,f2);
                     // } catch {
                         try {
-                            conflict = turf.difference(f1, turf.difference(f1, f2))
+                            conflict = turf.difference(f1, f2)
+                            if(conflict == null) {
+                                console.log("Jaddddaaa")
+
+                                conflict = f1
+
+                            } else {
+                                conflict = turf.difference(f1, conflict)
+                            }
                         } catch {
                         }
                     // }
