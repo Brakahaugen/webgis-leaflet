@@ -14,13 +14,7 @@ export default function createBuffer(input, dist, toggleSnack) {
       "features": [],
     } 
 
-    console.log(input)
-    console.log(input.layer)
-
-
     input.layer.eachLayer(function (layer) {
-      console.log(layer)
-      console.log(layer.feature)
       collection.features.push(layer.feature)
     });
     toggleSnack("Validation complete. Continuing with buffer-operation...", "info")
@@ -37,7 +31,6 @@ export default function createBuffer(input, dist, toggleSnack) {
       {units: "kilometers"},
     )
     buffered.name =  input.layer.name + " " + dist + "km_buffer"
-    console.log(buffered)
     return buffered;
       
   } catch {

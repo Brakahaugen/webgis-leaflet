@@ -4,7 +4,6 @@ import L from 'leaflet';
 
 
 export default function createDifference(input, toggleSnack) {
-    console.log(input)
     try {
 
         var main = []
@@ -30,8 +29,6 @@ export default function createDifference(input, toggleSnack) {
     
     try {
     //Do the operations on all polygons
-    console.log(main)
-    console.log(diff)
 
     var difference = {
         "type": "FeatureCollection",
@@ -64,7 +61,6 @@ export default function createDifference(input, toggleSnack) {
     
     
 
-    console.log(difference)
 
     toggleSnack("erased " + input[1].layer.name + " from " + input[0].layer.name, "success")
     return difference

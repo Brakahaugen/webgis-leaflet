@@ -44,12 +44,9 @@ const DisplayDialog = (props) => {
   }
 
   const doChanges = () => {
-    console.log(name)
     if ((name != "") && (name != undefined)) {
       props.item.layer.name = name
     } 
-    console.log(newColor)
-    console.log(props.item.layer.options.style.color)
     if ((newColor != undefined) && (newColor.hex != props.item.layer.options.style.color))  {
       props.item.layer.setStyle({ 
         weight: 2,

@@ -36,10 +36,6 @@ class App extends Component {
     // createdLayer: null,
   }
 
-  componentDidUpdate = () => {
-    console.log(this.state.layers)
-  }
-
   drawerToggleClickHandler = () => {
     this.setState((prevState) => {
       return {sideDrawerOpen: !prevState.sideDrawerOpen};
@@ -78,13 +74,11 @@ class App extends Component {
   handleListItemClick = (event, index) => {
     this.setState({
       selectedIndex: index,
-      zoomTo: [this.state.layers[index]],
+      // zoomTo: [this.state.layers[index]],
     });
 
     try {
-      console.log(this.state.layers[index].layer.name);
     } catch {
-      console.log("could not find name");
     }
 
   };
@@ -101,7 +95,6 @@ class App extends Component {
       // Save the deleted layer so you can undo it later;
       // updates the new state... Does not add the layer...
       this.state.deletedLayers.push(layerToDelete)
-      console.log(layerToDelete.layer._leaflet_id)
       this.setState({
         deletedLayer: layerToDelete.layer,
         layers: this.state.layers.filter(l => l.layer._leaflet_id !== itemId)
@@ -138,7 +131,6 @@ class App extends Component {
       this.setState({
         clickedPoints: [...this.state.clickedPoints, [e.latlng.lat, e.latlng.lng]]
       })
-      console.log(this.state.clickedPoints)
     } 
   }
 
@@ -166,7 +158,6 @@ class App extends Component {
   }
 
   toggleVisibility = (e) => {
-    console.log(e)
     if (e.visibility) {
       this.setState({
         hide: e
@@ -190,7 +181,6 @@ class App extends Component {
   
   
   highlightFeature = (e) => {
-    console.log(e)
     e.target.setStyle({
       weight: 2,
       dashArray: '',

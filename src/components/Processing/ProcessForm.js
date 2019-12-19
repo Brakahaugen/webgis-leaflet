@@ -74,8 +74,7 @@ export default class ProcessForm extends React.Component {
 
   toggleSnackbar = (msg, type) => {
     if ((typeof msg === 'string' || msg instanceof String) && (typeof type === 'string' || type instanceof String)) {
-      console.log(msg)
-      console.log(type)
+
       this.setState({
         snackbar: true,
         snackbarMsg: msg,
@@ -92,8 +91,7 @@ export default class ProcessForm extends React.Component {
   }
 
   handleClose = () => {
-    console.log(this.state.selectedTool)
-    console.log(this.props.layers)
+    
     this.setState({
       open: false
     });    
@@ -108,7 +106,6 @@ export default class ProcessForm extends React.Component {
 
   setParam = (param) => {
     if (this.state.param1 == param) {
-      console.log("samesies")
       return 
     } else if (this.state.param2 == param) {
       this.toggleSnackbar("You must choose two differen't layers", "warning")
@@ -120,7 +117,7 @@ export default class ProcessForm extends React.Component {
 
   setParam2 = (param) => {
     if (this.state.param2 == param) {
-      console.log("samesies")
+      
       return 
     } else if (this.state.param1 == param) {
       this.toggleSnackbar("You must choose two differen't layers", "warning")
@@ -134,7 +131,7 @@ export default class ProcessForm extends React.Component {
     this.setState({
       numberParameter: param.target.value,
     })
-    console.log(param.target.value)
+    
   }
 
   displaySnackbar = () => {
@@ -146,7 +143,6 @@ export default class ProcessForm extends React.Component {
         msg={this.state.snackbarMsg ? this.state.snackbarMsg: "hello"}//Input: string of mesage
       />)      
 
-    console.log(snackbar)
     return snackbar
   }
 

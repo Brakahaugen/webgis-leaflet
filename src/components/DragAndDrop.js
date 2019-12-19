@@ -12,7 +12,6 @@ class DragAndDrop extends Component {
   }
 
   handleDragIn = (e) => {
-    console.log("INSIDE");
     e.preventDefault()
     e.stopPropagation()
     this.dragCounter++
@@ -21,7 +20,6 @@ class DragAndDrop extends Component {
     }
   }
   handleDragOut = (e) => {
-    console.log("left");
     e.preventDefault()
     e.stopPropagation()
     this.dragCounter--
@@ -30,7 +28,6 @@ class DragAndDrop extends Component {
     }
   }
   handleDrop = (e) => {
-    console.log(e);
     e.preventDefault()
     e.stopPropagation()
     this.setState({drag: false})

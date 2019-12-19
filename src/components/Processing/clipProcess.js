@@ -16,27 +16,17 @@ export default function createClip(input, mask, toggleSnack) {
       "features": [],
     }
 
-    console.log(input)
-    console.log(input.layer)
     var inputType;
     //parsing the input
     input.layer.eachLayer(function (layer) {
       inputType = layer.feature.geometry.type;
-      console.log(layer)
-      console.log(layer.feature.geometry.type)
-      console.log(inputCollection)
       inputCollection.features.push(layer.feature)
-      console.log(inputCollection)
     });
-    console.log("Done with the inputs")
     //parsing the mask
     var clipMask = null
 
-    console.log(clipMask)
     mask.layer.eachLayer(function (layer) {
       var inputType = layer.feature.geometry.type;
-      console.log(layer)
-      console.log(layer.feature.geometry.type)
       if ((inputType != "Polygon") && (inputType != "MultiPolygon")) {
         fail();
       }
@@ -54,7 +44,9 @@ export default function createClip(input, mask, toggleSnack) {
 
   //Starting with the process.
   if (inputType == "Point") {
-    return turf.pointsWithinPolygon(inputCollection, clipMask);
+    var pointCollection = turf.pointsWithinPolygon(inputCollection, clipMask)
+    pointCollection.name = input.layer.name + "_clipped"
+    return pointCollection;
   } else if ((inputType == "Polygon") || (inputType == "MultiPolygon")) {
     return intersectProcess([input, mask], toggleSnack)
   } else if (inputType == "LineString") {

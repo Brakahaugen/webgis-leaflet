@@ -83,7 +83,7 @@ class LayerList extends Component {
   }
 
   onZoomToLayer = (item) => {
-    console.log("yiagkdajøgaskdgøasdk")
+
   }
 
   changeDisplay = (item) => {
@@ -114,7 +114,6 @@ class LayerList extends Component {
   }
 
    rightClick(e) {
-    console.log("RIGHT CLICK BABY ")
   }
 
 

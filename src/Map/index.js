@@ -65,7 +65,6 @@ export default class Map extends React.Component {
       });
 
       if(prevProps.createLayerMode == "Polygon") {
-        console.log("change the rules")
         coordinates = [...coordinates, coordinates[0]]
         coordinates = [coordinates]
       }
@@ -116,13 +115,11 @@ export default class Map extends React.Component {
     }
     //Remove the requested file
     else if (this.props.deletedLayer) {
-      console.log(this.props.deletedLayer)
       this.map.removeLayer(this.props.deletedLayer)
       this.props.resetFile();
     }
     //hide the layer L by removing it from the map
     else if (this.props.hide) {
-      console.log(this.props.hide)
       this.map.removeLayer(this.props.hide)
       this.props.resetFile();
     }
@@ -144,7 +141,6 @@ export default class Map extends React.Component {
 
   zoomToFeature = (e) => {
     try { 
-      console.log(e)
       return (e.layer ? this.map.fitBounds(e.target.getBounds()): "$10.00");
     } catch {
       
@@ -160,7 +156,6 @@ export default class Map extends React.Component {
     //Creating a new layer from geojson-data
   createLayer = (geojsonData) => {
 
-    console.log("creating a geojsonlayer")
     let geoj = L.geoJSON(geojsonData, {
       pointToLayer: function (feature, latlng) {
           return L.circleMarker(latlng, {

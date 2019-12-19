@@ -15,7 +15,6 @@ function MyDropzone(props) {
              const binaryStr = reader.result
              let jsonLayer = JSON.parse(binaryStr)
              props.handleNewFile(jsonLayer);
-             console.log(jsonLayer);
            }
            reader.readAsBinaryString(file)
          })

@@ -8,7 +8,6 @@ export default function createIntersect(input, toggleSnack) {
     var features1 = []
     var features2 = []
 
-    console.log(input)
     try {
     var pieces = []
     input[0].layer.eachLayer(layer => {    
@@ -26,7 +25,6 @@ export default function createIntersect(input, toggleSnack) {
         }
     });
     pieces.forEach((poly) => {
-        console.log(poly[0])
         features1.push(poly[0])
     })
     pieces = []
@@ -46,7 +44,6 @@ export default function createIntersect(input, toggleSnack) {
         }
     });
     pieces.forEach((poly) => {
-        console.log(poly[0])
         features2.push(poly[0])
     })
     
@@ -55,32 +52,10 @@ export default function createIntersect(input, toggleSnack) {
     }
 
     //For all features, find the intersection with all features. Computationnally extremely costly.
-    var intersections = []    
-    console.log(features2)
-    console.log(features1)
-    // try {
-    //     features1.forEach(f1 => {
-    //         features2.forEach(f2 => {
-    //             var conflict = null;
-    //                 try {
-    //                     console.log(f1)
-    //                     console.log(f2)
-    //                     conflict = turf.intersect(f1, f2)
-    //                 } catch {
-    //                     console.log("WTF why you no work")
-    //                 }
-    //             // }
-    //             if (conflict !== null) {
-    //                 intersections.push(conflict);
-    //             }   
-    //         })
-    //     })
-    //     console.log(intersections)
-    // } catch {
-        console.log("did not intersect properly")
+    var intersections = []  
         try {
-            features1.forEach(f1 => {
-                features2.forEach(f2 => {
+            features1.forEach(f2 => {
+                features2.forEach(f1 => {
                     var conflict = null;
                     // try {
                     //     conflict = turf.intersect(f1,f2);
@@ -88,7 +63,6 @@ export default function createIntersect(input, toggleSnack) {
                         try {
                             conflict = turf.difference(f1, f2)
                             if(conflict == null) {
-                                console.log("Jaddddaaa")
 
                                 conflict = f1
 
@@ -122,9 +96,6 @@ export default function createIntersect(input, toggleSnack) {
         "name": name + " intersection",
         "features": intersections,
     } 
-
-    console.log(intersect)
-    console.log(JSON.stringify(intersect))
 
     return intersect
 }

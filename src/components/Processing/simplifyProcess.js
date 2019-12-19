@@ -25,7 +25,6 @@ export default function createSimplify(input, tol, toggleSnack) {
       collection,
       options
     )
-    console.log((simplified));
     return simplified;
     
   } catch {

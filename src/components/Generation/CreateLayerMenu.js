@@ -86,7 +86,6 @@ export default class CreateLayerMenu extends React.Component {
   };
 
   handleSelect = event => {
-    console.log(event.target.value)
     this.props.toggleCreateMode(event.target.value)
     this.setState({
       type: event.target.value
@@ -104,7 +103,7 @@ export default class CreateLayerMenu extends React.Component {
           >
             <MenuItem value={"LineString"}>LineString</MenuItem>
             <MenuItem value={"Polygon"}>Polygon</MenuItem>
-            <MenuItem value={"B"}>BBox</MenuItem>
+            {/* <MenuItem value={"B"}>BBox</MenuItem> */}
 
           </Select>
           : ""}

@@ -9,7 +9,6 @@ export default function createLineIntersect(input, clipFeature, toggleSnack) {
     var features1 = []
     var features2 = []
 
-    console.log(input)
     input.layer.eachLayer(layer => {    
         features1.push(layer.feature)
         
@@ -25,7 +24,6 @@ export default function createLineIntersect(input, clipFeature, toggleSnack) {
     try {
         var split = turf.lineSplit(features1, features2);
         split.name = input.name + " splitted lines"
-        console.log(split)
         return split
         
     } catch {
