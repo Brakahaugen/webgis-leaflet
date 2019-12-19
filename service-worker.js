@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/webgis-leaflet/precache-manifest.d2ecd362772b198db9cb12e9c9d53613.js"
+  "/webgis-leaflet/precache-manifest.e269557da69b283781eecd5a5c565569.js"
 );
 
 self.addEventListener('message', (event) => {
