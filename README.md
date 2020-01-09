@@ -1,4 +1,8 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a project created for the course TBA4251, Programming in Geomatics at NTNU.
+
+The deployed webpage can be seen here:
+https://brakahaugen.github.io/webgis-leaflet/
+
 
 ## Available Scripts
 
